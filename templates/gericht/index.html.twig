@@ -19,6 +19,7 @@
             <td>Bestell Nr.</td>
             <td>Name</td>
             <td>Beschreibung</td>
+            <td>Kategorie</td>
             <td>Preis</td>
             <td>Löschen</td>
             <td><a href="{{ path('gericht.anlegen') }}">Anlegen</a></td>
@@ -28,8 +29,9 @@
     {% for gericht in gerichte %}
         <tr>
             <td>{{ gericht.id }}</td>
-            <td>{{ gericht.name }}</td>
+            <td><a href="{{ path('gericht.anzeigen', {id: gericht.id}) }}">{{ gericht.name }}</a></td>
             <td>{{ gericht.beschreibung }}</td>
+            <td>{{ gericht.kategorie }}</td>
             <td>{{ gericht.preis }}</td>
             <td><a href="{{ path('gericht.entfernen', {id: gericht.id}) }}">X</a></td>
             <td></td>
