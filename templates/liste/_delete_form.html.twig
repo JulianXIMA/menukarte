@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('liste_delete', {'id': liste.id}) }}" onsubmit="return confirm('Sind Sie sicher das Sie den Datensatz löschen wollen?');">
+	<input type="hidden" name="_method" value="DELETE">
+	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ liste.id) }}">
+	<button class="btn btn-light">löschen</button>
+</form>

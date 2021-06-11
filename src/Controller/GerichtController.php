@@ -80,4 +80,16 @@ class GerichtController extends AbstractController
             'gericht' => $gericht,
         ]);
     }
+
+    #[Route('/preis/{id}', name: 'preis')]
+    public function preis($id, GerichtRepository $gerichtRepository): Response
+    {
+        $gericht = $gerichtRepository->find5Euro($id);
+        dump($gericht);
+        //Bsp.: https://menukarte.ddev.site/gericht/preis/10
+
+        /*return $this->render('gericht/anzeigen.html.twig', [
+            'gericht' => $gericht,
+        ]);*/
+    }
 }

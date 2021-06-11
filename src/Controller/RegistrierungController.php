@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RegistrierungController extends AbstractController
 {
     #[Route('/reg', name: 'reg')]
-    public function reg(Request $request, UserPasswordEncoderInterface $passEncoder): Response
+    public function reg(Request $request, UserPasswordEncoderInterface $passEncoder, ValidatorInterface $validator): Response
     {
         $regform = $this->createFormBuilder()
             ->add('username', TextType::class, ['label' => 'Mitarbeiter'])
@@ -38,15 +39,26 @@ class RegistrierungController extends AbstractController
             $user->setUsername($eingabe['username']);
             $user->setPassword($passEncoder->encodePassword($user, $eingabe['password']));
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $user->setRawPassword($eingabe['password']);
+            $errors = $validator->validate($user);
+            if(count($errors) > 0)
+            {
+                return $this->render('registrierung/index.html.twig', [
+                    'regform' => $regform->createView(),
+                    'errors' => $errors
+                ]);
+            } else {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+            }
 
             return $this->redirect($this->generateUrl('home'));
         }
 
         return $this->render('registrierung/index.html.twig', [
-            'regform' => $regform->createView()
+            'regform' => $regform->createView(),
+            'errors' => null
         ]);
     }
 }
