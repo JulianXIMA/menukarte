@@ -14,10 +14,12 @@ class BestellungController extends AbstractController
     #[Route('/bestellung', name: 'bestellung')]
     public function index(BestellungRepository $bestellungRepository): Response
     {
-
+        $bestellung = $bestellungRepository->findBy([
+            'tisch' => 'tisch1'
+        ]);
 
         return $this->render('bestellung/index.html.twig', [
-            'controller_name' => 'BestellungController',
+            'bestellungen' => $bestellung,
         ]);
     }
 
@@ -38,5 +40,28 @@ class BestellungController extends AbstractController
         $this->addFlash('bestell', $bestellung->getName() . ' wurde zur Bestellung hinzugefügt');
 
         return $this->redirect($this->generateUrl('menu'));
+    }
+
+    #[Route('/status/{id},{status}', name: 'status')]
+    public function status($id, $status): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $bestellung = $em->getRepository(Bestellung::class)->find($id);
+
+        $bestellung->setStatus($status);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('bestellung'));
+    }
+
+    #[Route('/loeschen/{id}', name: 'loeschen')]
+    public function entfernen($id, BestellungRepository $bestellungRepository)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $bestellung = $bestellungRepository->find($id);
+        $em->remove($bestellung);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('bestellung'));
     }
 }

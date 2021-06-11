@@ -14,7 +14,7 @@
                             <h2><span>{{ gericht1.name }}</span>!</h2>
                             <p>Probieren sie heute {{ gericht1.beschreibung }} für {{ gericht1.preis }} Euro!</p>
                             <a href="{{ path('menu') }}" class="site-btn">Menükarte</a>
-                            <a href="#" class="site-btn sb-c2">Bestellen</a>
+                            <a href="{{ path('bestellen', {id: gericht1.id}) }}" class="site-btn sb-c2">Bestellen</a>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -33,7 +33,7 @@
                             <h2><span>{{ gericht2.name }}</span>!</h2>
                             <p>Probieren sie heute {{ gericht2.beschreibung }} für {{ gericht2.preis }} Euro!</p>
                             <a href="{{ path('menu') }}" class="site-btn">Menükarte</a>
-                            <a href="#" class="site-btn sb-c2">Bestellen</a>
+                            <a href="{{ path('bestellen', {id: gericht2.id}) }}" class="site-btn sb-c2">Bestellen</a>
                         </div>
                     </div>
                     <div class="col-lg-6">
